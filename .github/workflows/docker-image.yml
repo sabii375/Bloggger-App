@@ -1,0 +1,24 @@
+name: Docker Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        run: |
+          docker --version
+          sudo service docker start
+          sudo docker build -t my-django-app .
+          
+      - name: Deploy Docker container
+        run: |
+          docker run -d -p 8000:8000 my-django-app
